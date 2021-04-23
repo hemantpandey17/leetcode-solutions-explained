@@ -1,0 +1,63 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isPalindrome(ListNode head) {
+        ListNode fast = head;
+        ListNode slow = head;
+        
+        while(fast!=null && fast.next!=null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        
+        if(fast!=null) {
+            slow = slow.next;
+        }
+        
+        slow = reverse(slow);
+        fast = head;
+        while(slow!=null) {
+            if(slow.val!=fast.val)
+                return false;
+            slow = slow.next;
+            fast = fast.next;
+        }
+        return true;
+    }
+    
+    public ListNode reverse(ListNode root) {
+        ListNode prev = null;
+        ListNode curr = root;
+        while(curr!=null) {
+            ListNode temp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = temp;
+        }
+        return prev;
+    }
+}
+
+/*
+Dry run
+
+1->2->3->2->1
+slow is at 1, fast is at 1
+
+fast goes to 3, slow goes to 2
+fast goes to 1, slpow goes to 3
+
+Since, fast,next is not null, move slow to 2
+
+Now slow = 2->1
+On reversing slow, slow = 1->2
+
+Start fast from head and keep checking one by one entry in slow
+
+*/
